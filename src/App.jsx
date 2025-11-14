@@ -1,27 +1,35 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { Routes, Route, useNavigate } from 'react-router-dom'
+import Home from './pages/Home'
+import About from './pages/About'
+import Contact from './pages/Contact'
+import Admission from './pages/Admission'
+import Students from './pages/Students'
+import Attendance from './pages/Attendance'
+import Login from './pages/Login'
+import AdmissionsAdmin from './pages/AdmissionsAdmin'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [user, setUser] = useState(null)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (user && window.location.pathname === '/login') {
+      navigate('/')
+    }
+  }, [user])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Vibe Coding Platform
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Your AI-powered development environment
-        </p>
-        <div className="text-center">
-          <button
-            onClick={() => setCount(count + 1)}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-          >
-            Count is {count}
-          </button>
-        </div>
-      </div>
-    </div>
+    <Routes>
+      <Route path="/" element={<Home user={user} onLogout={()=>setUser(null)} />} />
+      <Route path="/about" element={<About user={user} onLogout={()=>setUser(null)} />} />
+      <Route path="/contact" element={<Contact user={user} onLogout={()=>setUser(null)} />} />
+      <Route path="/admission" element={<Admission user={user} onLogout={()=>setUser(null)} />} />
+      <Route path="/students" element={<Students user={user} onLogout={()=>setUser(null)} />} />
+      <Route path="/attendance" element={<Attendance user={user} onLogout={()=>setUser(null)} />} />
+      <Route path="/login" element={<Login user={user} setUser={setUser} />} />
+      <Route path="/admissions-admin" element={<AdmissionsAdmin user={user} onLogout={()=>setUser(null)} />} />
+    </Routes>
   )
 }
 
